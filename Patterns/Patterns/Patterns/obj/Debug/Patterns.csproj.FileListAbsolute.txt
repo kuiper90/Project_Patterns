@@ -1,0 +1,6 @@
+C:\Users\Ana\source\repos\UnitTest_Patterns\Patterns\Patterns\Patterns\obj\Debug\Patterns.csproj.CoreCompileInputs.cache
+C:\Users\Ana\source\repos\UnitTest_Patterns\Patterns\Patterns\Patterns\bin\Debug\Patterns.exe.config
+C:\Users\Ana\source\repos\UnitTest_Patterns\Patterns\Patterns\Patterns\bin\Debug\Patterns.exe
+C:\Users\Ana\source\repos\UnitTest_Patterns\Patterns\Patterns\Patterns\bin\Debug\Patterns.pdb
+C:\Users\Ana\source\repos\UnitTest_Patterns\Patterns\Patterns\Patterns\obj\Debug\Patterns.exe
+C:\Users\Ana\source\repos\UnitTest_Patterns\Patterns\Patterns\Patterns\obj\Debug\Patterns.pdb
