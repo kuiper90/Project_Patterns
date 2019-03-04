@@ -1,4 +1,5 @@
 ﻿using Patterns;
+using System;
 
 namespace Patterns
 {
@@ -15,7 +16,7 @@ namespace Patterns
 
         public IMatch Match(string text)
         {
-            if (text == "")
+            if (String.IsNullOrEmpty(text))
                 return (new Match(false, text));
             bool success = ((text[0] >= start) && (text[0] <= end));
             if (!success)
