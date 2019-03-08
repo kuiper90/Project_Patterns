@@ -1,6 +1,14 @@
-C:\Users\Ana\source\repos\UnitTest_Patterns\Patterns\Patterns\Patterns\obj\Debug\Patterns.csproj.CoreCompileInputs.cache
 C:\Users\Ana\source\repos\UnitTest_Patterns\Patterns\Patterns\Patterns\bin\Debug\Patterns.exe.config
 C:\Users\Ana\source\repos\UnitTest_Patterns\Patterns\Patterns\Patterns\bin\Debug\Patterns.exe
 C:\Users\Ana\source\repos\UnitTest_Patterns\Patterns\Patterns\Patterns\bin\Debug\Patterns.pdb
+C:\Users\Ana\source\repos\UnitTest_Patterns\Patterns\Patterns\Patterns\obj\Debug\Patterns.csproj.CoreCompileInputs.cache
 C:\Users\Ana\source\repos\UnitTest_Patterns\Patterns\Patterns\Patterns\obj\Debug\Patterns.exe
 C:\Users\Ana\source\repos\UnitTest_Patterns\Patterns\Patterns\Patterns\obj\Debug\Patterns.pdb
+C:\Users\Ana\source\repos\UnitTest_Patterns\Patterns\Patterns\Patterns\obj\Debug\Patterns.csprojAssemblyReference.cache
+D:\Git\Project_Patterns\Patterns\Patterns\Patterns\bin\Debug\Patterns.exe.config
+D:\Git\Project_Patterns\Patterns\Patterns\Patterns\bin\Debug\Patterns.exe
+D:\Git\Project_Patterns\Patterns\Patterns\Patterns\bin\Debug\Patterns.pdb
+D:\Git\Project_Patterns\Patterns\Patterns\Patterns\obj\Debug\Patterns.csprojAssemblyReference.cache
+D:\Git\Project_Patterns\Patterns\Patterns\Patterns\obj\Debug\Patterns.csproj.CoreCompileInputs.cache
+D:\Git\Project_Patterns\Patterns\Patterns\Patterns\obj\Debug\Patterns.exe
+D:\Git\Project_Patterns\Patterns\Patterns\Patterns\obj\Debug\Patterns.pdb

@@ -15,17 +15,10 @@ namespace Patterns
         {
             if (this.prefix == "")
                 return (new Match(text != null, text));
-            if (String.IsNullOrEmpty(text))
-                return (new Match(false, text));   
-            string remainingText = text;
-            foreach (char chr in this.prefix)
-            {
-                if (remainingText[0] != chr)
-                    return (new Match(false, text));
-                else
-                    remainingText = remainingText.Remove(0, 1);
-            }
-            return (new Match(true, remainingText));
+            int len = prefix.Length;
+            return !String.IsNullOrEmpty(text) && text.StartsWith(prefix)
+                ? new Match(true, text.Substring(len))
+                : new Match(false, text);
         }
     }
 }

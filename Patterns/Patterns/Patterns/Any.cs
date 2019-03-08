@@ -13,15 +13,9 @@ namespace Patterns
 
         public IMatch Match(string text)
         {
-            if (String.IsNullOrEmpty(text))
-                return (new Match(false, text));
-            bool success = false;
-            foreach (char chr in this.accepted)
-            {
-                if (success = (text[0] == chr))
-                    return (new Match(success, text.Remove(0, 1)));
-            }
-            return (new Match(false, text));
+            return !String.IsNullOrEmpty(text) && accepted.Contains(text[0].ToString())
+                ? new Match(true, text.Substring(1))
+                : new Match(false, text);
         }
     }
 }

@@ -1,6 +1,3 @@
-C:\Users\Ana\source\repos\UnitTest_Patterns\UnitTest_Patterns\UnitTest_Patterns\obj\Debug\netcoreapp2.1\UnitTest_Patterns.csproj.CoreCompileInputs.cache
-C:\Users\Ana\source\repos\UnitTest_Patterns\UnitTest_Patterns\UnitTest_Patterns\obj\Debug\netcoreapp2.1\UnitTest_Patterns.AssemblyInfoInputs.cache
-C:\Users\Ana\source\repos\UnitTest_Patterns\UnitTest_Patterns\UnitTest_Patterns\obj\Debug\netcoreapp2.1\UnitTest_Patterns.AssemblyInfo.cs
 C:\Users\Ana\source\repos\UnitTest_Patterns\UnitTest_Patterns\UnitTest_Patterns\bin\Debug\netcoreapp2.1\xunit.runner.visualstudio.dotnetcore.testadapter.dll
 C:\Users\Ana\source\repos\UnitTest_Patterns\UnitTest_Patterns\UnitTest_Patterns\bin\Debug\netcoreapp2.1\xunit.runner.reporters.netcoreapp10.dll
 C:\Users\Ana\source\repos\UnitTest_Patterns\UnitTest_Patterns\UnitTest_Patterns\bin\Debug\netcoreapp2.1\xunit.runner.utility.netcoreapp10.dll
@@ -13,6 +10,9 @@ C:\Users\Ana\source\repos\UnitTest_Patterns\UnitTest_Patterns\UnitTest_Patterns\
 C:\Users\Ana\source\repos\UnitTest_Patterns\UnitTest_Patterns\UnitTest_Patterns\bin\Debug\netcoreapp2.1\Patterns.pdb
 C:\Users\Ana\source\repos\UnitTest_Patterns\UnitTest_Patterns\UnitTest_Patterns\bin\Debug\netcoreapp2.1\Patterns.exe.config
 C:\Users\Ana\source\repos\UnitTest_Patterns\UnitTest_Patterns\UnitTest_Patterns\obj\Debug\netcoreapp2.1\UnitTest_Patterns.csprojAssemblyReference.cache
+C:\Users\Ana\source\repos\UnitTest_Patterns\UnitTest_Patterns\UnitTest_Patterns\obj\Debug\netcoreapp2.1\UnitTest_Patterns.csproj.CoreCompileInputs.cache
+C:\Users\Ana\source\repos\UnitTest_Patterns\UnitTest_Patterns\UnitTest_Patterns\obj\Debug\netcoreapp2.1\UnitTest_Patterns.AssemblyInfoInputs.cache
+C:\Users\Ana\source\repos\UnitTest_Patterns\UnitTest_Patterns\UnitTest_Patterns\obj\Debug\netcoreapp2.1\UnitTest_Patterns.AssemblyInfo.cs
 C:\Users\Ana\source\repos\UnitTest_Patterns\UnitTest_Patterns\UnitTest_Patterns\obj\Debug\netcoreapp2.1\UnitTest_Patterns.csproj.CopyComplete
 C:\Users\Ana\source\repos\UnitTest_Patterns\UnitTest_Patterns\UnitTest_Patterns\obj\Debug\netcoreapp2.1\UnitTest_Patterns.dll
 C:\Users\Ana\source\repos\UnitTest_Patterns\UnitTest_Patterns\UnitTest_Patterns\obj\Debug\netcoreapp2.1\UnitTest_Patterns.pdb
