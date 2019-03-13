@@ -22,6 +22,16 @@ namespace Patterns
             return (new Match(false, text));
         }
 
+        public void Add(IPattern pattern)
+        {
+            int len = this.patterns.Length;
+            IPattern[] patt = new IPattern[len + 1];
+
+            patterns.CopyTo(patt, 0);
+            patt[len] = pattern;
+            this.patterns = patt;            
+        }
+
         static void Main()
         {
 

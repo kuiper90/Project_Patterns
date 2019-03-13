@@ -8,27 +8,16 @@ namespace Patterns
 
         public Number()
         {
-            var digit = new Range('0', '9');
+            IPattern digit = new Range('0', '9');
 
-            var natural = new Choice(new Character('0'),
-                                     new Sequence(new Range('1', '9'),
-                                     new Many(digit)));
+            IPattern exponent = new Sequence(new Any("eE"), new Optional(new Any("+-")), new OneOrMore(digit));
 
-            var integer = new Sequence(new Optional(new Character('-')),
-                                       natural);
+            IPattern integerPart = new Sequence(new Optional(new Character('-')), 
+                                                new Choice(new Character('0'), new OneOrMore(digit)));
 
-            var exponent = new Sequence(new Any("eE"),
-                                        new Optional(new Any("+-")),
-                                        new OneOrMore(digit));
+            IPattern fractionalPart = new Sequence(new Character('.'), new OneOrMore(digit));
 
-            var fractional = new Sequence(new Character('.'),
-                                          new OneOrMore(digit));
-
-            var generalIntegerPart = new Sequence(integer,
-                                                  new Optional(fractional));
-
-            pattern = new Sequence(generalIntegerPart,
-                                   new Optional(exponent));
+            pattern = new Sequence(integerPart, new Optional(fractionalPart), new Optional(exponent));
         }
 
         public IMatch Match(string text)
