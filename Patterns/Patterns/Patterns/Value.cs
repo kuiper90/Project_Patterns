@@ -9,37 +9,35 @@ namespace Patterns
 
         public Value()
         {
-            Choice value = new Choice(new Strings(),
-                                        new Number(),
-                                        new Text("true"),
-                                        new Text("false"),
-                                        new Text("null"));
+            Choice value = new Choice(
+                new Strings(),
+                new Number(),
+                new Text("true"),
+                new Text("false"),
+                new Text("null")
+            );
 
-            IPattern whitespace = new Many(new Any(" \r\n\t"));
+            IPattern separator = Wrap(',');
 
-            IPattern separatorObj = new Sequence(whitespace, new Character(':'), whitespace);
-
-            IPattern separator = new Sequence(whitespace, new Character(','), whitespace);
-
-            IPattern leftBrace = new Sequence(whitespace, new Character('{'), whitespace);
-
-            IPattern rightBrace = new Sequence(whitespace, new Character('}'), whitespace);
-
-            IPattern leftBracket = new Sequence(whitespace, new Character('['), whitespace);
-
-            IPattern rightBracket = new Sequence(whitespace, new Character(']'), whitespace);
-
-            IPattern objBody = new List(new Sequence(new Strings(), separatorObj, value), separator);
-
-            IPattern obj = new Sequence(leftBrace, objBody, rightBrace);
+            IPattern objBody = new List(new Sequence(new Strings(), Wrap(':'), value), separator);
+            IPattern obj = new Sequence(Wrap('{'), objBody, Wrap('}'));
 
             IPattern arrayBody = new List(value, separator);
+            IPattern array = new Sequence(Wrap('['), arrayBody, Wrap(']'));
 
-            IPattern array = new Sequence(leftBracket, arrayBody, rightBracket);          
             value.Add(array);
             value.Add(obj);
 
             pattern = value;
+        }
+
+        private static IPattern Wrap(char c)
+            => WrapPattern(new Character(c));
+    
+        private static IPattern WrapPattern(IPattern pattern)
+        {
+            var whitespace = new Many(new Any(" \r\n\t"));
+            return new Sequence(whitespace, pattern, whitespace);
         }
 
         public IMatch Match(string text)

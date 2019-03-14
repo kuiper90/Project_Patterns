@@ -20,14 +20,6 @@ namespace Patterns
             {
                 IMatch match = pattern.Match(remainingText);
 
-                //if (!match.Success())
-                //    return (new Match(false, text));
-                //else
-                //{
-                //    remainingText = match.RemainingText();
-                //    continue;
-                //}
-
                 if (!match.Success())
                     return new Match(false, text);
                 remainingText = match.RemainingText();
