@@ -1,37 +1,20 @@
-﻿using Patterns;
-
-namespace Patterns
+﻿namespace Patterns
 {
-    public interface IMatch
+    public class Match : IMatch
     {
-        bool Success();
-        string RemainingText();
-    }
-
-    public interface IPattern
-    {
-        IMatch Match(string text);
-    }
-
-    class Match : IMatch
-    {
-        bool success;
+        bool isMatch;
         string remainingText;
 
-        public Match(bool success, string remainingText)
+        public Match(bool isMatch, string remainingText)
         {
-            this.success = success;
+            this.isMatch = isMatch;
             this.remainingText = remainingText;
         }
 
         public bool Success()
-        {
-            return (this.success);
-        }
+            => this.isMatch;
 
         public string RemainingText()
-        {
-            return (this.remainingText);
-        }
+            => this.remainingText;
     }
 }

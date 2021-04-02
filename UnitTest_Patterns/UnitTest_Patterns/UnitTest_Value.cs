@@ -1,5 +1,4 @@
-﻿using System;
-using Patterns;
+﻿using Patterns;
 using Xunit;
 
 namespace UnitTest_Patterns
@@ -7,134 +6,175 @@ namespace UnitTest_Patterns
     public class UnitTest_Value
     {
         [Fact]
-        public void ShouldBe_True_ValidJson()
+        public void JsonArrayMatchesJson()
         {
-            IPattern str = new Value();
-            string tmp = "{\"menu\": { "                                           
-                        + "\"popup\": {"
-                        + "\"menuitem\": ["                       
-                        + "{\"value\": \"Open\", \"onclick\": \"OpenDoc()\"}"                      
-                        + "]"
-                        + "}"
-                        + "}}";
-            Assert.True(str.Match(tmp).Success());
-            Assert.True(str.Match(tmp).RemainingText() == "");
+            IPattern pattern = new Value();
+            string str = "{\"menu\": { "
+                         + "\"popup\": {"
+                         + "\"menuitem\":"
+                            + "["
+                                + "{\"value\": \"Open\","
+                                + "\"onclick\": \"OpenDoc()\"}"
+                            + "]"
+                         + "}"
+                         + "}}";
+            Assert.True(pattern.Match(str).Success());
+            Assert.True(pattern.Match(str).RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void ShouldBe_False_InvalidJson_Missing_SecondLeftBracket()
+        public void DoubleEndingJsonDoesNotMatchJson()
         {
-            IPattern str = new Value();
-            string tmp = "{\"menu\":  "
-                        + "\"id\": \"file\","
-                        + "\"value\": \"File\","
-                        + "\"popup\": {"
-                        + "\"menuitem\": ["
-                        + "{\"value\": \"New\", \"onclick\": \"CreateNewDoc()\"},"                      
-                        + "{\"value\": \"Close\", \"onclick\": \"CloseDoc()\"}"
-                        + "]"
-                        + "}"
-                        + "}}";
-            Assert.False(str.Match(tmp).Success());
-            Assert.True(str.Match(tmp).RemainingText() == tmp);
+            IPattern pattern = new Value();
+            string str = "{\"menu\":  "
+                         + "\"id\": \"file\","
+                         + "\"value\": \"File\","
+                         + "\"popup\":"
+                            + "{"
+                                + "\"menuitem\":"
+                                + "["
+                                     + "{\"value\": \"New\","
+                                     + "\"onclick\": \"CreateNewDoc()\"},"
+                                     + "{\"value\": \"Close\","
+                                     + "\"onclick\": \"CloseDoc()\"}"
+                                + "]"
+                            + "}"
+                         + "}}";
+            Assert.False(pattern.Match(str).Success());
+            Assert.True(pattern.Match(str).RemainingText() == str);
         }
 
         [Fact]
-        public void ShouldBe_True_ValidJson_ListInObject()
+        public void JsonArrayJsonValueMatchesJson()
         {
-            IPattern str = new Value();
-            string tmp = "{\"menu\":"
-                        + "["
-                        + "{\"value\": \"Open\", \"onclick\": \"OpenDoc()\"}"
-                        + "]"                      
-                        + "}";
-            Assert.True(str.Match(tmp).Success());
-            Assert.True(str.Match(tmp).RemainingText() == "");
+            IPattern pattern = new Value();
+            string str = "{\"menu\":"
+                            + "["
+                                + "{\"value\": \"Open\","
+                                + "\"onclick\": \"OpenDoc()\"}"
+                            + "]"
+                         + "}";
+            Assert.True(pattern.Match(str).Success());
+            Assert.True(pattern.Match(str).RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void ShouldBe_True_ValidSimpleJson_Object()
+        public void SimplestJsonMatchesJson()
         {
-            IPattern str = new Value();
-            Assert.True(str.Match("{\"menu\": \"casper\"}").Success());
-            Assert.True(str.Match("{\"menu\": \"casper\"}").RemainingText() == "");
+            IPattern pattern = new Value();
+            string str = "{\"menu\": \"file\"}";
+            Assert.True(pattern.Match(str).Success());
+            Assert.True(pattern.Match(str).RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void ShouldBe_True_ValidSimpleJson_Array()
+        public void CharacterArrayMatchesJson()
         {
-            IPattern str = new Value();
-            Assert.True(str.Match("[1, 2, 3]").Success());
-            Assert.True(str.Match("[1, 2, 3]").RemainingText() == "");
+            IPattern pattern = new Value();
+            string str = "[1, 2, 3]";
+            Assert.True(pattern.Match(str).Success());
+            Assert.True(pattern.Match(str).RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void ShouldBe_True_ValidJson_DoubleNestedObject()
+        public void SimpleNestedJsonMatchesJson()
         {
-            IPattern str = new Value();
-            Assert.True(str.Match("{\"menu\": {\"id\": \"file\"}}").Success());
-            Assert.True(str.Match("{\"menu\": {\"id\": \"file\"}}").RemainingText() == "");
+            IPattern pattern = new Value();
+            string str = "{\"menu\":"
+                            + "{\"id\": \"file\"}"
+                          + "}";
+            Assert.True(pattern.Match(str).Success());
+            Assert.True(pattern.Match(str).RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void ShouldBe_True_ValidJson_DoubleObject()
+        public void NestedJsonMatchesJson()
         {
-            IPattern str = new Value();
-            Assert.True(str.Match("{\"menu\": {\"id\": \"file\", \"value\": \"casper\"} }").Success());
-            Assert.True(str.Match("{\"menu\": {\"id\": \"file\", \"value\": \"casper\"} }").RemainingText() == "");
+            IPattern pattern = new Value();
+            string str = "{\"menu\":"
+                            + "{\"id\": \"file\","
+                            + "\"value\": \"txt\"}"
+                          + "}";
+            Assert.True(pattern.Match(str).Success());
+            Assert.True(pattern.Match(str).RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void ShouldBe_False_InvalidJson_DoubleNestedObject()
+        public void IncorrectEndingNestedJsonDoesNotMatchJson()
         {
-            IPattern str = new Value();
-            Assert.True(str.Match("{\"menu\": {\"id\": \"file\"}}}").Success());
-            Assert.True(str.Match("{\"menu\": {\"id\": \"file\"}}}").RemainingText() == "}");
+            IPattern pattern = new Value();
+            string str = "{\"menu\":"
+                            + "{\"id\": \"file\"}}"
+                          + "}";
+            Assert.True(pattern.Match(str).Success());
+            Assert.True(pattern.Match(str).RemainingText() == "}");
         }
 
         [Fact]
-        public void ShouldBe_True_ValidJson_TripleNestedObject()
+        public void DoubleNestedJsonMatchesJson()
         {
-            IPattern str = new Value();
-            string tmp = "{\"menu\":"
-                        + "{\"menuItem\":"
-                        + "{\"value\": \"Open\"}"
-                        + "}"
-                        + "}";
-            Assert.True(str.Match(tmp).Success());
-            Assert.True(str.Match(tmp).RemainingText() == "");
+            IPattern pattern = new Value();
+            string str = "{\"menu\":"
+                            + "{\"menuItem\":"
+                                + "{\"value\": \"Open\"}"
+                            + "}"
+                         + "}";
+            Assert.True(pattern.Match(str).Success());
+            Assert.True(pattern.Match(str).RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void ShouldBe_True_ValidJson_DoubleNestedArray()
+        public void ArrayJsonMatchesJson()
         {
-            IPattern str = new Value();
-            Assert.True(str.Match("[{\"menu\": \"menuId\"}, {\"file\": \"fileName\"}]").Success());
-            Assert.True(str.Match("[{\"menu\": \"menuId\"}, {\"file\": \"fileName\"}]").RemainingText() == "");
+            IPattern pattern = new Value();
+            string str = "["
+                            + "{\"menu\": \"id\"},"
+                            + "{\"file\": \"fileName\"}"
+                         + "]";
+            Assert.True(pattern.Match(str).Success());
+            Assert.True(pattern.Match(str).RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void ShouldBe_False_InvalidJson_DoubleNestedArray()
+        public void ArrayJsonMissingSeparatorDoesNotMatchJson()
         {
-            IPattern str = new Value();
-            Assert.False(str.Match("[{\"menu\": \"menuId\"}}, {\"file\": \"fileName\"}]").Success());
-            Assert.True(str.Match("[{\"menu\": \"menuId\"}}, {\"file\": \"fileName\"}]").RemainingText() == "[{\"menu\": \"menuId\"}}, {\"file\": \"fileName\"}]");
+            IPattern pattern = new Value();
+            string str = "["
+                            + "{\"menu\": \"id\"}"
+                            + "{\"file\": \"fileName\"}"
+                         + "]";
+            Assert.False(pattern.Match(str).Success());
+            Assert.True(pattern.Match(str).RemainingText() == str);
         }
 
         [Fact]
-        public void ShouldBe_False_EmptyJson()
+        public void IncorrectEndingJsonInArrayDoesNotMatchJson()
         {
-            IPattern str = new Value();
-            Assert.False(str.Match("").Success());
-            Assert.True(str.Match("").RemainingText() == "");
+            IPattern pattern = new Value();
+            string str = "["
+                            + "{\"menu\": \"id\"}"
+                            + "},"
+                            + "{\"file\": \"fileName\"}"
+                          + "]";
+            Assert.False(pattern.Match(str).Success());
+            Assert.True(pattern.Match(str).RemainingText() == str);
         }
 
         [Fact]
-        public void ShouldBe_True_NullJson()
+        public void EmptyDoesNotMatchJson()
         {
-            IPattern str = new Value();
-            Assert.True(str.Match("null").Success());
-            Assert.True(str.Match("null").RemainingText() == "");
+            IPattern pattern = new Value();
+            Assert.False(pattern.Match("").Success());
+            Assert.True(pattern.Match("").RemainingText()?.Length == 0);
+        }
+
+        [Fact]
+        public void NullMatchesNullJson()
+        {
+            IPattern pattern = new Value();
+            string str = "null";
+            Assert.True(pattern.Match(str).Success());
+            Assert.True(pattern.Match(str).RemainingText()?.Length == 0);
         }
     }
 }

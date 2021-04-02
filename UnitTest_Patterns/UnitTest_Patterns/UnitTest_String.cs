@@ -1,5 +1,4 @@
-﻿using System;
-using Patterns;
+﻿using Patterns;
 using Xunit;
 
 namespace UnitTest_Patterns
@@ -7,115 +6,115 @@ namespace UnitTest_Patterns
     public class UnitTest_String
     {
         [Fact]
-        public void ShouldBe_False_UnicodeNumberAndNewline()
+        public void CharactersUnicodeNumberNewlineCharactersSequenceDoesNotMatchString()
         {
-            IPattern str = new Strings();
-            Assert.False(str.Match("\"Test\\u0097\nAnother line\"").Success());
-            Assert.True(str.Match("\"Test\\u0097\nAnother line\"").RemainingText() == "\"Test\\u0097\nAnother line\"");
+            IPattern pattern = new String();
+            Assert.False(pattern.Match("\"Test\\u0097\nAnother line\"").Success());
+            Assert.True(pattern.Match("\"Test\\u0097\nAnother line\"").RemainingText() == "\"Test\\u0097\nAnother line\"");
         }
 
         [Fact]
-        public void ShouldBe_True_UnicodeNumberAndEscapedNewline()
+        public void CharactersUnicodeNumberEscapedNewlineCharactersSequenceDoesNotMatchString()
         {
-            IPattern str = new Strings();
-            Assert.True(str.Match("\"Test\\u0097\\nAnother line\"").Success());
-            Assert.True(str.Match("\"Test\\u0097\\nAnother line\"").RemainingText() == "");
+            IPattern pattern = new String();
+            Assert.True(pattern.Match("\"Test\\u0097\\nAnother line\"").Success());
+            Assert.True(pattern.Match("\"Test\\u0097\\nAnother line\"").RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void ShouldBe_True_StartAndEndDoubleQuotes()
+        public void CharactersEscapedDoubleQuotesSequenceMatchesString()
         {
-            IPattern str = new Strings();
-            Assert.True(str.Match("\"abc\"").Success());
-            Assert.True(str.Match("\"abc\"").RemainingText() == "");
+            IPattern pattern = new String();
+            Assert.True(pattern.Match("\"abc\"").Success());
+            Assert.True(pattern.Match("\"abc\"").RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void ShouldBe_False_EndExtraEscapedDoubleQuotes()
+        public void EscapedQuotesCharactersAndDoubleEscapedQuotesSequenceMatchesString()
         {
-            IPattern str = new Strings();
-            Assert.True(str.Match("\"abc\"\"").Success());
-            Assert.True(str.Match("\"abc\"\"").RemainingText() == "\"");
+            IPattern pattern = new String();
+            Assert.True(pattern.Match("\"abc\"\"").Success());
+            Assert.True(pattern.Match("\"abc\"\"").RemainingText() == "\"");
         }
 
         [Fact]
-        public void ShouldBe_False_MidEscapedDoubleQuotes()
+        public void CharactersEscapedDoubleQuotesCharactersSequenceMatchesString()
         {
-            IPattern str = new Strings();
-            Assert.True(str.Match("\"ab\"c\"").Success());
-            Assert.True(str.Match("\"ab\"c\"").RemainingText() == "c\"");
+            IPattern pattern = new String();
+            Assert.True(pattern.Match("\"ab\"c\"").Success());
+            Assert.True(pattern.Match("\"ab\"c\"").RemainingText() == "c\"");
         }
 
         [Fact]
-        public void ShouldBe_False_UnicodeNumberOneHex()
+        public void CharactersUnicodeNumberOneHexSequenceMatchesString()
         {
-            IPattern str = new Strings();
-            Assert.False(str.Match("\"ab12\\uc\"").Success());
-            Assert.True(str.Match("\"ab12\\uc\"").RemainingText() == "\"ab12\\uc\"");
+            IPattern pattern = new String();
+            Assert.False(pattern.Match("\"ab12\\uc\"").Success());
+            Assert.True(pattern.Match("\"ab12\\uc\"").RemainingText() == "\"ab12\\uc\"");
         }
 
         [Fact]
-        public void ShouldBe_False_StartNoDoubleQuotes()
+        public void CharactersDoubleQuotesSequenceDoesNotMatchString()
         {
-            IPattern str = new Strings();
-            Assert.False(str.Match("Test\"").Success());
-            Assert.True(str.Match("Test\"").RemainingText() == "Test\"");
+            IPattern pattern = new String();
+            Assert.False(pattern.Match("Test\"").Success());
+            Assert.True(pattern.Match("Test\"").RemainingText() == "Test\"");
         }
 
         [Fact]
-        public void ShouldBe_False_EndNoDoubleQuotes()
+        public void DoubleQuotesCharactersSequenceDoesNotMatchString()
         {
-            IPattern str = new Strings();
-            Assert.False(str.Match("\"Test").Success());
-            Assert.True(str.Match("\"Test").RemainingText() == "\"Test");
+            IPattern pattern = new String();
+            Assert.False(pattern.Match("\"Test").Success());
+            Assert.True(pattern.Match("\"Test").RemainingText() == "\"Test");
         }
 
         [Fact]
-        public void ShouldBe_False_StartEscapedReverseSolidus()
+        public void EscapedReverseSolidusCharactersQuotedSequenceDoesNotMatchString()
         {
-            IPattern str = new Strings();
-            Assert.False(str.Match("\"\\Test\"").Success());
-            Assert.True(str.Match("\"\\Test\"").RemainingText() == "\"\\Test\"");
+            IPattern pattern = new String();
+            Assert.False(pattern.Match("\"\\Test\"").Success());
+            Assert.True(pattern.Match("\"\\Test\"").RemainingText() == "\"\\Test\"");
         }
 
         [Fact]
-        public void ShouldBe_True_EscapedCarriageReturn()
+        public void CharactersEscapedCarriageReturnCharactersQuotedSequenceMatchesString()
         {
-            IPattern str = new Strings();
-            Assert.True(str.Match("\"ab12\\rc\"").Success());
-            Assert.True(str.Match("\"ab12\\rc\"").RemainingText() == "");
+            IPattern pattern = new String();
+            Assert.True(pattern.Match("\"ab12\\rc\"").Success());
+            Assert.True(pattern.Match("\"ab12\\rc\"").RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void ShouldBe_False_InternEscapedDoubleQuotes()
+        public void CharactersEscapedDoubleQuotesCharactersMatchesString()
         {
-            IPattern str = new Strings();
-            Assert.True(str.Match("\"Te\"st\"").Success());
-            Assert.True(str.Match("\"Te\"st\"").RemainingText() == "st\"");
+            IPattern pattern = new String();
+            Assert.True(pattern.Match("\"Te\"st\"").Success());
+            Assert.True(pattern.Match("\"Te\"st\"").RemainingText() == "st\"");
         }
 
         [Fact]
-        public void ShouldBe_False_InternDoubleReverseSolidus()
+        public void CharactersDoubleReverseSolidusCharactersSequenceMatchesString()
         {
-            IPattern str = new Strings();
-            Assert.True(str.Match("\"Te\\\\st\"").Success());
-            Assert.True(str.Match("\"Te\\\\st\"").RemainingText() == "");
+            IPattern pattern = new String();
+            Assert.True(pattern.Match("\"Te\\\\st\"").Success());
+            Assert.True(pattern.Match("\"Te\\\\st\"").RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void ShouldBe_True_DoubleQuotes()
+        public void DoubleQuotesSequenceMatchesString()
         {
-            IPattern str = new Strings();
-            Assert.True(str.Match("\"\"").Success());
-            Assert.True(str.Match("\"\"").RemainingText() == "");
+            IPattern pattern = new String();
+            Assert.True(pattern.Match("\"\"").Success());
+            Assert.True(pattern.Match("\"\"").RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void ShouldBe_False_EmtpyString()
+        public void EmptyDoesNotMatchString()
         {
-            IPattern str = new Strings();
-            Assert.False(str.Match("").Success());
-            Assert.True(str.Match("").RemainingText() == "");
+            IPattern pattern = new String();
+            Assert.False(pattern.Match("").Success());
+            Assert.True(pattern.Match("").RemainingText()?.Length == 0);
         }
     }
 }

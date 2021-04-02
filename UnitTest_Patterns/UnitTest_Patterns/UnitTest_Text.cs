@@ -1,113 +1,96 @@
-﻿using System;
-using Patterns;
+﻿using Patterns;
 using Xunit;
 
-namespace Patterns
+namespace UnitTest_Patterns
 {
     public class UnitTest_Text
     {
         [Fact]
-        public void TrueString_Should_Match_StringTrue()
+        public void LowerCaseStringMatchesLowerCaseText()
         {
-            Text trueText = new Text("true");
-            Assert.True(trueText.Match("true").Success() == true);
-            Assert.True(trueText.Match("true").RemainingText() == "");
+            Text text = new Text("true");
+            Assert.True(text.Match("true").Success());
+            Assert.True(text.Match("true").RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void TrueString_Should_Match_StringTrueAndChar()
+        public void LowerCaseStringMatchesStringWithLowerCapsAndUpperCase()
         {
-            Text trueText = new Text("true");
-            Assert.True(trueText.Match("trueX").Success() == true);
-            Assert.True(trueText.Match("trueX").RemainingText() == "X");
+            Text text = new Text("true");
+            Assert.True(text.Match("trueX").Success());
+            Assert.True(text.Match("trueX").RemainingText() == "X");
         }
 
         [Fact]
-        public void TrueString_ShouldNot_Match_StringFalse()
+        public void LowerCaseStringDoesNotMatchLowerCaseText()
         {
-            Text trueText = new Text("true");
-            Assert.True(trueText.Match("false").Success() == false);
-            Assert.True(trueText.Match("false").RemainingText() == "false");
+            Text text = new Text("true");
+            Assert.False(text.Match("false").Success());
+            Assert.True(text.Match("false").RemainingText() == "false");
         }
 
         [Fact]
-        public void Empty_ShouldNot_Match_StringTrue()
+        public void EmptyStringDoesNotMatchText()
         {
-            Text trueText = new Text("true");
-            Assert.True(trueText.Match("").Success() == false);
-            Assert.True(trueText.Match("").RemainingText() == "");
+            Text text = new Text("true");
+            Assert.False(text.Match("").Success());
+            Assert.True(text.Match("").RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void Null_ShouldNot_Match_StringTrue()
+        public void NullDoesNotMatchLowerCaseText()
         {
-            Text trueText = new Text("true");
-            Assert.True(trueText.Match(null).Success() == false);
-            Assert.True(trueText.Match(null).RemainingText() == null);
+            Text text = new Text("true");
+            Assert.False(text.Match(null).Success());
+            Assert.True(text.Match(null).RemainingText() == null);
         }
 
         [Fact]
-        public void FalseString_Should_Match_StringFalse()
+        public void LowerAndUpperCaseStringMatchesLowerCaseText()
         {
-            Text falseText = new Text("false");
-            Assert.True(falseText.Match("false").Success() == true);
-            Assert.True(falseText.Match("false").RemainingText() == "");
+            Text text = new Text("false");
+            Assert.True(text.Match("falseX").Success());
+            Assert.True(text.Match("falseX").RemainingText() == "X");
         }
 
         [Fact]
-        public void FalseString_Should_Match_StringFalseAndChars()
+        public void StringDoesNotMatchText()
         {
-            Text falseText = new Text("false");
-            Assert.True(falseText.Match("falseX").Success() == true);
-            Assert.True(falseText.Match("falseX").RemainingText() == "X");
+            Text text = new Text("false");
+            Assert.False(text.Match("true").Success());
+            Assert.True(text.Match("true").RemainingText() == "true");
         }
 
         [Fact]
-        public void FalseString_ShouldNot_Match_StringTrue()
+        public void NullDoesNotMatchText()
         {
-            Text falseText = new Text("false");
-            Assert.True(falseText.Match("true").Success() == false);
-            Assert.True(falseText.Match("true").RemainingText() == "true");
+            Text text = new Text("false");
+            Assert.False(text.Match(null).Success());
+            Assert.True(text.Match(null).RemainingText() == null);
         }
 
         [Fact]
-        public void Empty_ShouldNot_Match_StringFalse()
+        public void EmptyStringMatchesEmptyText()
         {
-            Text falseText = new Text("false");
-            Assert.True(falseText.Match("").Success() == false);
-            Assert.True(falseText.Match("").RemainingText() == "");
+            Text text = new Text("");
+            Assert.True(text.Match("").Success());
+            Assert.True(text.Match("").RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void Null_ShouldNot_Match_StringFalse()
+        public void LowerCaseStringMatchesEmptyText()
         {
-            Text falseText = new Text("false");
-            Assert.True(falseText.Match(null).Success() == false);
-            Assert.True(falseText.Match(null).RemainingText() == null);
+            Text text = new Text("");
+            Assert.True(text.Match("true").Success());
+            Assert.True(text.Match("true").RemainingText() == "true");
         }
 
         [Fact]
-        public void Empty_Should_Match_Empty()
+        public void NullDoesNotMatchEmptyText()
         {
-            Text empty = new Text("");
-            Assert.True(empty.Match("").Success() == true);
-            Assert.True(empty.Match("").RemainingText() == "");
-        }
-
-        [Fact]
-        public void TrueString_Should_Match_Empty()
-        {
-            Text empty = new Text("");
-            Assert.True(empty.Match("true").Success() == true);
-            Assert.True(empty.Match("true").RemainingText() == "true");
-        }
-
-        [Fact]
-        public void Null_ShouldNot_Match_Empty()
-        {
-            Text empty = new Text("");
-            Assert.True(empty.Match(null).Success() == false);
-            Assert.True(empty.Match(null).RemainingText() == null);
+            Text text = new Text("");
+            Assert.False(text.Match(null).Success());
+            Assert.True(text.Match(null).RemainingText() == null);
         }
     }
 }

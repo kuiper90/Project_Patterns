@@ -1,7 +1,4 @@
-﻿using Patterns;
-using System;
-
-namespace Patterns
+﻿namespace Patterns
 {
     public class Sequence : IPattern
     {
@@ -11,20 +8,20 @@ namespace Patterns
         {
             this.patterns = patterns;
         }
-        
+
         public IMatch Match(string text)
         {
-            string remainingText = text;
-
+            IMatch isMatch = new Match(true, text);
             foreach (var pattern in this.patterns)
             {
-                IMatch match = pattern.Match(remainingText);
-
-                if (!match.Success())
+                isMatch = pattern.Match(isMatch.RemainingText());
+                if (!isMatch.Success())
+                {
                     return new Match(false, text);
-                remainingText = match.RemainingText();
+                }
             }
-            return (new Match(true, remainingText));
+
+            return new Match(true, isMatch.RemainingText());
         }
     }
 }

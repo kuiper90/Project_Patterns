@@ -1,105 +1,111 @@
-﻿using System;
-using Patterns;
+﻿using Patterns;
 using Xunit;
 
-namespace Patterns
+namespace UnitTest_Patterns
 {
     public class UnitTest_List
     {
         [Fact]
-        public void InputPattern_DigitCommaDigit_Should_Match_DigitComma()
+        public void CharactersStringMatchesList()
         {
-            List a = new List(new Range('0', '9'), new Character(','));
-            Assert.True(a.Match("1,2,3").Success() == true);
-            Assert.True(a.Match("1,2,3").RemainingText() == "");
+            var pattern = new List(new Range('0', '9'), new Character(','));
+            Assert.True(pattern.Match("1,2,3").Success());
+            Assert.True(pattern.Match("1,2,3").RemainingText() == "");
         }
 
         [Fact]
-        public void InputPattern_DigitComma_Should_Match_DigitComma()
+        public void StringEndingInCommaMatchesList()
         {
-            List a = new List(new Range('0', '9'), new Character(','));
-            Assert.True(a.Match("1,2,3,").Success() == true);
-            Assert.True(a.Match("1,2,3,").RemainingText() == ",");
+            var pattern = new List(new Range('0', '9'), new Character(','));
+            Assert.True(pattern.Match("1,2,3,").Success());
+            Assert.True(pattern.Match("1,2,3,").RemainingText() == ",");
         }
 
         [Fact]
-        public void DigitLetter_Should_Match_DigitComma()
+        public void DigitLetterMatchesList()
         {
-            List a = new List(new Range('0', '9'), new Character(','));
-            Assert.True(a.Match("1a").Success() == true);
-            Assert.True(a.Match("1a").RemainingText() == "a");
+            var pattern = new List(new Range('0', '9'), new Character(','));
+            Assert.True(pattern.Match("1a").Success());
+            Assert.True(pattern.Match("1a").RemainingText() == "a");
         }
 
         [Fact]
-        public void Chars_Should_Match_DigitComma()
+        public void LettersMatchList()
         {
-            List a = new List(new Range('0', '9'), new Character(','));
-            Assert.True(a.Match("abc").Success() == true);
-            Assert.True(a.Match("abc").RemainingText() == "abc");
+            var pattern = new List(new Range('0', '9'), new Character(','));
+            Assert.True(pattern.Match("abc").Success());
+            Assert.True(pattern.Match("abc").RemainingText() == "abc");
         }
 
         [Fact]
-        public void Empty_Should_Match_DigitComma()
+        public void EmptyMatchesListPattern()
         {
-            List a = new List(new Range('0', '9'), new Character(','));
-            Assert.True(a.Match("").Success() == true);
-            Assert.True(a.Match("").RemainingText() == "");
+            var pattern = new List(new Range('0', '9'), new Character(','));
+            Assert.True(pattern.Match("").Success());
+            Assert.True(pattern.Match("").RemainingText() == "");
         }
 
         [Fact]
-        public void Null_Should_Match_DigitComma()
+        public void NullMatchesList()
         {
-            List a = new List(new Range('0', '9'), new Character(','));
-            Assert.True(a.Match(null).Success() == true);
-            Assert.True(a.Match(null).RemainingText() == null);
+            var pattern = new List(new Range('0', '9'), new Character(','));
+            Assert.True(pattern.Match(null).Success());
+            Assert.True(pattern.Match(null).RemainingText() == null);
         }
 
-        public List GetList()
+        [Fact]
+        public void NullMatchesListComplexList()
+        {
+            var digits = new OneOrMore(new Range('0', '9'));
+            var whitespace = new Many(new Any(" \r\n\t"));
+            var separator = new Sequence(whitespace, new Character(';'), whitespace);
+            var list = new List(digits, separator);
+            Assert.True(list.Match(null).Success());
+            Assert.True(list.Match(null).RemainingText() == null);
+        }
+
+        [Fact]
+        public void DigitsAndSeparatorsStringMatchesComplexList()
+        {
+            var digits = new OneOrMore(new Range('0', '9'));
+            var whitespace = new Many(new Any(" \r\n\t"));
+            var separator = new Sequence(whitespace, new Character(';'), whitespace);
+            var list = new List(digits, separator);
+            Assert.True(list.Match("1; 22  ;\n 333 \t; 22").Success());
+            Assert.True(list.Match("1; 22  ;\n 333 \t; 22").RemainingText()?.Length == 0);
+        }
+
+        [Fact]
+        public void DigitsSeparatorsMatchComplexList()
+        {
+            var digits = new OneOrMore(new Range('0', '9'));
+            var whitespace = new Many(new Any(" \r\n\t"));
+            var separator = new Sequence(whitespace, new Character(';'), whitespace);
+            var list = new List(digits, separator);
+            Assert.True(list.Match("1 \n;").Success());
+            Assert.True(list.Match("1 \n;").RemainingText() == " \n;");
+        }
+
+        [Fact]
+        public void CharactersMatchComplexList()
+        {
+            var digits = new OneOrMore(new Range('0', '9'));
+            var whitespace = new OneOrMore(new Any(" \r\n\t"));
+            var separator = new Sequence(whitespace, new Character(';'), whitespace);
+            var list = new List(digits, separator);
+            Assert.True(list.Match("abc").Success());
+            Assert.True(list.Match("abc").RemainingText() == "abc");
+        }
+
+        [Fact]
+        public void EmptyStringMatchesList()
         {
             IPattern digits = new OneOrMore(new Range('0', '9'));
             IPattern whitespace = new Many(new Any(" \r\n\t"));
             IPattern separator = new Sequence(whitespace, new Character(';'), whitespace);
-            return (new List(digits, separator));
-        }
-       
-        [Fact]
-        public void Null_Should_Match_ListOfPatterns()
-        {
-            List a = GetList();
-            Assert.True(a.Match(null).Success() == true);
-            Assert.True(a.Match(null).RemainingText() == null);
-        }
-
-        [Fact]
-        public void DigitsSeparatorsDigits_Should_Match_ListOfPatterns()
-        {
-            List a = GetList();
-            Assert.True(a.Match("1; 22  ;\n 333 \t; 22").Success() == true);
-            Assert.True(a.Match("1; 22  ;\n 333 \t; 22").RemainingText() == "");
-        }
-
-        [Fact]
-        public void DigitsSeparators_Should_Match_ListOfPatterns()
-        {
-            List a = GetList();
-            Assert.True(a.Match("1 \n;").Success() == true);
-            Assert.True(a.Match("1 \n;").RemainingText() == " \n;");
-        }
-
-        [Fact]
-        public void Letters_Should_Match_ListOfPatterns()
-        {
-            List a = GetList();
-            Assert.True(a.Match("abc").Success() == true);
-            Assert.True(a.Match("abc").RemainingText() == "abc");
-        }
-
-        [Fact]
-        public void Empty_Should_Match_ListOfPatterns()
-        {
-            List a = GetList();
-            Assert.True(a.Match("").Success() == true);
-            Assert.True(a.Match("").RemainingText() == "");
+            List list = new List(digits, separator);
+            Assert.True(list.Match("").Success());
+            Assert.True(list.Match("").RemainingText()?.Length == 0);
         }
     }
 }

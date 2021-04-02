@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Patterns
+﻿namespace Patterns
 {
     public class Number : IPattern
     {
@@ -9,20 +7,26 @@ namespace Patterns
         public Number()
         {
             IPattern digit = new Range('0', '9');
-
-            IPattern exponent = new Sequence(new Any("eE"), new Optional(new Any("+-")), new OneOrMore(digit));
-
-            IPattern integerPart = new Sequence(new Optional(new Character('-')), 
-                                                new Choice(new Character('0'), new OneOrMore(digit)));
-
-            IPattern fractionalPart = new Sequence(new Character('.'), new OneOrMore(digit));
-
-            pattern = new Sequence(integerPart, new Optional(fractionalPart), new Optional(exponent));
+            IPattern digits = new OneOrMore(digit);
+            IPattern exponent = new Sequence(
+                new Any("eE"),
+                new Optional(new Any("+-")),
+                digits);
+            IPattern integer = new Sequence(
+                new Optional(new Character('-')),
+                new Choice(
+                    new Character('0'),
+                    digits));
+            IPattern fractional = new Sequence(
+                new Character('.'),
+                digits);
+            this.pattern = new Sequence(
+                integer,
+                new Optional(fractional),
+                new Optional(exponent));
         }
 
         public IMatch Match(string text)
-        {
-            return (pattern.Match(text));
-        }
+            => this.pattern.Match(text);
     }
 }

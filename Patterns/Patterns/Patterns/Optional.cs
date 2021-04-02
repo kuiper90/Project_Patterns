@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Patterns
+﻿namespace Patterns
 {
     public class Optional : IPattern
     {
@@ -13,10 +11,10 @@ namespace Patterns
 
         public IMatch Match(string text)
         {
-            var match = this.pattern.Match(text);
-            return new Match(true, match.Success() 
-                ? match.RemainingText() 
-                : text);
+            IMatch isMatch = this.pattern.Match(text);
+            return isMatch.Success() ?
+                   new Match(true, isMatch.RemainingText()) :
+                   new Match(true, text);
         }
     }
 }

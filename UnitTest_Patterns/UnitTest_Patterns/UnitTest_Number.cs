@@ -1,94 +1,85 @@
-﻿using System;
-using Patterns;
+﻿using Patterns;
 using Xunit;
 
-namespace Patterns
+namespace UnitTest_Patterns
 {
     public class UnitTest_Number
     {
         [Fact]
-        public void ShouldBe_True_UnsignedByte()
+        public void UnsignedByteMatchesNumber()
         {
             IPattern number = new Number();
-            Assert.True(number.Match("234").Success());
-            Assert.True(number.Match("234").RemainingText() == "");
+            Assert.True(number.Match("753").Success());
+            Assert.True(number.Match("753").RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void ShouldBe_True_SignedByte()
+        public void UnsignedDigitSequenceMatchesNumber()
         {
             IPattern number = new Number();
-            Assert.True(number.Match("-123").Success());
-            Assert.True(number.Match("-123").RemainingText() == "");
+            Assert.True(number.Match("023").Success());
+            Assert.True(number.Match("023").RemainingText() == "23");
         }
 
         [Fact]
-        public void ShouldBe_True_Float()
+        public void SignedByteMatchesNumber()
         {
             IPattern number = new Number();
-            Assert.True(number.Match("12.34").Success() == true);
-            Assert.True(number.Match("12.34").RemainingText() == "");
+            Assert.True(number.Match("-78").Success());
+            Assert.True(number.Match("-78").RemainingText()?.Length == 0);
+        }
+
+        [Fact]
+        public void RealNumberMatchesNumber()
+        {
+            IPattern number = new Number();
+            Assert.True(number.Match("75.13").Success());
+            Assert.True(number.Match("75.13").RemainingText()?.Length == 0);
 
         }
 
         [Fact]
-        public void ShouldBe_True_FloatWithPositiveExponent1()
+        public void RealNumberAndExponentMatchesNumber()
         {
             IPattern number = new Number();
-            Assert.True(number.Match("12.123e3").Success());
-            Assert.True(number.Match("12.123e3").RemainingText() == "");
+            Assert.True(number.Match("75.123e3").Success());
+            Assert.True(number.Match("75.123e3").RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void ShouldBe_True_FloatWithPositiveExponent2()
+        public void RealNumberAndHighExponentMatchesNumber()
         {
             IPattern number = new Number();
-            Assert.True(number.Match("12.123E+3").Success());
-            Assert.True(number.Match("12.123E+3").RemainingText() == "");
+            Assert.True(number.Match("75.123E+3").Success());
+            Assert.True(number.Match("75.123E+3").RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void ShouldBe_True_FloatWithNegativeExponent()
+        public void RealNumberAndNegativeExponentMatchesNumber()
         {
             IPattern number = new Number();
-            Assert.True(number.Match("12.123E-2").Success());
-            Assert.True(number.Match("12.123E-2").RemainingText() == "");
+            Assert.True(number.Match("75.123E-2").Success());
+            Assert.True(number.Match("75.123E-2").RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void ShouldBe_True_UnsignedByteStartWithZero()
+        public void RealNumberAndIncompleteExponentSequenceMatchesNumber()
         {
             IPattern number = new Number();
-            Assert.True(number.Match("012").Success());
-            Assert.True(number.Match("012").RemainingText() == "12");
+            Assert.True(number.Match("75.23E").Success());
+            Assert.True(number.Match("75.23E").RemainingText() == "E");
         }
 
         [Fact]
-        public void ShouldBe_True_FloatNoExp()
+        public void UnsignedByteEndAndPeriodMatchesNumber()
         {
             IPattern number = new Number();
-            Assert.True(number.Match("12.123E").Success());
-            Assert.True(number.Match("12.123E").RemainingText() == "E");
+            Assert.True(number.Match("78.").Success());
+            Assert.True(number.Match("78.").RemainingText() == ".");
         }
 
         [Fact]
-        public void ShouldBe_True_UnsignedByteEndWithPeriod()
-        {
-            IPattern number = new Number();
-            Assert.True(number.Match("12.").Success());
-            Assert.True(number.Match("12.").RemainingText() == ".");
-        }
-
-        [Fact]
-        public void ShouldBe_False_Period()
-        {
-            IPattern number = new Number();
-            Assert.False(number.Match(".").Success());
-            Assert.True(number.Match(".").RemainingText() == ".");
-        }
-
-        [Fact]
-        public void ShouldBe_False_PeriodDigit()
+        public void PeriodDigitSequenceDoesNotMatchNumber()
         {
             IPattern number = new Number();
             Assert.False(number.Match(".5").Success());
@@ -96,7 +87,7 @@ namespace Patterns
         }
 
         [Fact]
-        public void ShouldBe_True_ZeroPeriod()
+        public void IntegralPeriodSequenceMatchesNumber()
         {
             IPattern number = new Number();
             Assert.True(number.Match("0.").Success());
@@ -104,31 +95,31 @@ namespace Patterns
         }
 
         [Fact]
-        public void ShouldBe_True_FloatNoFractionalPartWithExp()
+        public void IntegralPeriodExponentSequenceMatchesNumber()
         {
             IPattern number = new Number();
-            Assert.True(number.Match("123.E15").Success());
-            Assert.True(number.Match("123.E15").RemainingText() == ".E15");
+            Assert.True(number.Match("754.E9").Success());
+            Assert.True(number.Match("754.E9").RemainingText() == ".E9");
         }
 
         [Fact]
-        public void ShouldBe_True_NegFloatNoFractionalPartWithNegExp()
+        public void NegativeIntegralPeriodNegativeExponentSequenceMatchesNumber()
         {
             IPattern number = new Number();
-            Assert.True(number.Match("-123.E-15").Success());
-            Assert.True(number.Match("-123.E-15").RemainingText() == ".E-15");
+            Assert.True(number.Match("-753.E-9").Success());
+            Assert.True(number.Match("-753.E-9").RemainingText() == ".E-9");
         }
 
         [Fact]
-        public void ShouldBe_True_NegFloatWithNegExp()
+        public void NegativeNumberAndNegativeExponentMatchesNumber()
         {
             IPattern number = new Number();
-            Assert.True(number.Match("-123.1E-15").Success());
-            Assert.True(number.Match("-123.1E-15").RemainingText() == "");
+            Assert.True(number.Match("-753.1E-15").Success());
+            Assert.True(number.Match("-753.1E-15").RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void ShouldBe_False_Exp()
+        public void ExponentDoesNotMatchNumber()
         {
             IPattern number = new Number();
             Assert.False(number.Match("e").Success());
@@ -136,7 +127,7 @@ namespace Patterns
         }
 
         [Fact]
-        public void ShouldBe_False_FractionalExp()
+        public void PeriodExponentSequenceDoesNotMatchNumber()
         {
             IPattern number = new Number();
             Assert.False(number.Match(".e").Success());
@@ -144,7 +135,7 @@ namespace Patterns
         }
 
         [Fact]
-        public void ShouldBe_False_FloatExp()
+        public void ExponentPeriodSequenceDoesNotMatchNumber()
         {
             IPattern number = new Number();
             Assert.False(number.Match("e.").Success());
@@ -152,7 +143,7 @@ namespace Patterns
         }
 
         [Fact]
-        public void ShouldBe_False_DoubleZero()
+        public void DoubleZeroMatchesNumber()
         {
             IPattern number = new Number();
             Assert.True(number.Match("00").Success());
@@ -160,67 +151,75 @@ namespace Patterns
         }
 
         [Fact]
-        public void ShouldBe_True_Zero()
-        {
-            IPattern number = new Number();
-            Assert.True(number.Match("0").Success());
-            Assert.True(number.Match("0").RemainingText() == "");
-        }
-
-        [Fact]
-        public void ShouldBe_True_MinusZero()
+        public void MinusZeroMatchesNumber()
         {
             IPattern number = new Number();
             Assert.True(number.Match("-0").Success());
-            Assert.True(number.Match("-0").RemainingText() == "");
+            Assert.True(number.Match("-0").RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void ShouldBe_True_NegFloatZeroFractionalPartWithNegExp()
+        public void DigitMatchesNumber()
         {
             IPattern number = new Number();
-            Assert.True(number.Match("-123.0E-15").Success());
-            Assert.True(number.Match("-123.0E-15").RemainingText() == "");
+            Assert.True(number.Match("7").Success());
+            Assert.True(number.Match("7").RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void ShouldBe_False_NegFloatWithNegFractionalExp()
+        public void NegativeIntegralMinusExponentMatchesNumber()
         {
             IPattern number = new Number();
-            Assert.True(number.Match("-123.01E-1.5").Success());
-            Assert.True(number.Match("-123.01E-1.5").RemainingText() == ".5");
+            Assert.True(number.Match("-0-e9").Success());
+            Assert.True(number.Match("-0-e9").RemainingText() == "-e9");
         }
 
         [Fact]
-        public void ShouldBe_True_NegFloatWithDoubleNegExp()
+        public void NegativeRealNumberAndNegativeExponentMatchesNumber()
         {
             IPattern number = new Number();
-            Assert.True(number.Match("-123.01Ee-15").Success());
-            Assert.True(number.Match("-123.01Ee-15").RemainingText() == "Ee-15");
+            Assert.True(number.Match("-754.0E-7").Success());
+            Assert.True(number.Match("-754.0E-7").RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void ShouldBe_False_NegZeroMinusExp()
+        public void NegativeNumberAndNegativeRealExponentMatchesNumber()
         {
             IPattern number = new Number();
-            Assert.True(number.Match("-0-e12").Success());
-            Assert.True(number.Match("-0-e12").RemainingText() == "-e12");
+            Assert.True(number.Match("-754.01E-1.1").Success());
+            Assert.True(number.Match("-754.01E-1.1").RemainingText() == ".1");
         }
 
         [Fact]
-        public void ShouldBe_True_NegFloatZeroFractionalPartWithPosEx()
+        public void NegativeNumberAndNegativeFractionalExponentMatchesNumber()
         {
             IPattern number = new Number();
-            Assert.True(number.Match("12.0E+2").Success());
-            Assert.True(number.Match("12.0E+2").RemainingText() == "");
+            Assert.True(number.Match("-754.01E-1.0").Success());
+            Assert.True(number.Match("-754.01E-1.0").RemainingText() == ".0");
         }
 
         [Fact]
-        public void ShouldBe_False_EmtpyNumber()
+        public void NegativeRealNumberAndDoubleNegativeExponentMatchesNumber()
+        {
+            IPattern number = new Number();
+            Assert.True(number.Match("-754.01Ee-7").Success());
+            Assert.True(number.Match("-754.01Ee-7").RemainingText() == "Ee-7");
+        }
+
+        [Fact]
+        public void NegativeRealNumberAndExponentMatchesNumber()
+        {
+            IPattern number = new Number();
+            Assert.True(number.Match("14.0E+7").Success());
+            Assert.True(number.Match("14.0E+7").RemainingText()?.Length == 0);
+        }
+
+        [Fact]
+        public void EmtpyDoesNotMatchNumber()
         {
             IPattern number = new Number();
             Assert.False(number.Match("").Success());
-            Assert.True(number.Match("").RemainingText() == "");
+            Assert.True(number.Match("").RemainingText()?.Length == 0);
         }
     }
 }

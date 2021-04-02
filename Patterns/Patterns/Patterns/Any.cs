@@ -1,10 +1,10 @@
-﻿using System;
+﻿using System.Linq;
 
 namespace Patterns
 {
     public class Any : IPattern
     {
-        string accepted;
+        private readonly string accepted;
 
         public Any(string accepted)
         {
@@ -12,10 +12,8 @@ namespace Patterns
         }
 
         public IMatch Match(string text)
-        {
-            return !String.IsNullOrEmpty(text) && accepted.Contains(text[0].ToString())
+            => !string.IsNullOrEmpty(text) && this.accepted.Contains(text[0])
                 ? new Match(true, text.Substring(1))
                 : new Match(false, text);
-        }
     }
 }

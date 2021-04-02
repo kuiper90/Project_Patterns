@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Patterns
+﻿namespace Patterns
 {
     public class Many : IPattern
     {
@@ -12,13 +10,14 @@ namespace Patterns
         }
 
         public IMatch Match(string text)
-        {   
-            IMatch match = this.pattern.Match(text);
+        {
+            IMatch isMatch = this.pattern.Match(text);
+            while (isMatch.Success())
+            {
+                isMatch = this.pattern.Match(isMatch.RemainingText());
+            }
 
-            while (match.Success())
-                match = this.pattern.Match(match.RemainingText());
-            
-            return new Match(true, match.RemainingText());
+            return new Match(true, isMatch.RemainingText());
         }
     }
 }

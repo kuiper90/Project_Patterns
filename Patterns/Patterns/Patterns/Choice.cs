@@ -1,5 +1,4 @@
-﻿using Patterns;
-using System;
+﻿using System;
 
 namespace Patterns
 {
@@ -16,29 +15,21 @@ namespace Patterns
         {
             foreach (var pattern in this.patterns)
             {
-                IMatch match = pattern.Match(text);
-                if (match.Success())
-                    return (match);
+                IMatch isMatch = pattern.Match(text);
+                if (isMatch.Success())
+                {
+                    return isMatch;
+                }
             }
-            return (new Match(false, text));
+
+            return new Match(false, text);
         }
 
         public void Add(IPattern pattern)
         {
             int len = this.patterns.Length + 1;
-            //IPattern[] patt = new IPattern[len + 1];
-            //patterns.CopyTo(patt, 0);
-            //patt[len] = pattern;
-            //this.patterns = patt;            
-
             Array.Resize(ref patterns, len);
-            patterns[len - 1] = pattern;
-        }
-
-        static void Main()
-        {
-
+            this.patterns[len - 1] = pattern;
         }
     }
 }
-

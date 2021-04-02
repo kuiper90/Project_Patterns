@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Patterns
+﻿namespace Patterns
 {
     public class Text : IPattern
     {
-        string prefix;
+        private readonly string prefix;
 
         public Text(string prefix)
         {
@@ -13,12 +11,17 @@ namespace Patterns
 
         public IMatch Match(string text)
         {
-            if (this.prefix == "")
-                return (new Match(text != null, text));
-            int len = prefix.Length;
-            return !String.IsNullOrEmpty(text) && text.StartsWith(prefix)
-                ? new Match(true, text.Substring(len))
-                : new Match(false, text);
+            if (string.IsNullOrEmpty(this.prefix))
+            {
+                return new Match(text != null, text);
+            }
+
+            if (!string.IsNullOrEmpty(text) && text.StartsWith(this.prefix))
+            {
+                return new Match(true, text.Substring(this.prefix.Length));
+            }
+
+            return new Match(false, text);
         }
     }
 }

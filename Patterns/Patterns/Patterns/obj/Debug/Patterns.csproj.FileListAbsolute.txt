@@ -12,3 +12,9 @@ D:\Git\Project_Patterns\Patterns\Patterns\Patterns\obj\Debug\Patterns.csprojAsse
 D:\Git\Project_Patterns\Patterns\Patterns\Patterns\obj\Debug\Patterns.csproj.CoreCompileInputs.cache
 D:\Git\Project_Patterns\Patterns\Patterns\Patterns\obj\Debug\Patterns.exe
 D:\Git\Project_Patterns\Patterns\Patterns\Patterns\obj\Debug\Patterns.pdb
+E:\Git\Project_Patterns\Patterns\Patterns\Patterns\bin\Debug\Patterns.dll.config
+E:\Git\Project_Patterns\Patterns\Patterns\Patterns\bin\Debug\Patterns.dll
+E:\Git\Project_Patterns\Patterns\Patterns\Patterns\bin\Debug\Patterns.pdb
+E:\Git\Project_Patterns\Patterns\Patterns\Patterns\obj\Debug\Patterns.csproj.CoreCompileInputs.cache
+E:\Git\Project_Patterns\Patterns\Patterns\Patterns\obj\Debug\Patterns.dll
+E:\Git\Project_Patterns\Patterns\Patterns\Patterns\obj\Debug\Patterns.pdb

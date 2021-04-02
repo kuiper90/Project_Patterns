@@ -1,7 +1,4 @@
-﻿using System;
-using Patterns;
-
-namespace Patterns
+﻿namespace Patterns
 {
     public class Value : IPattern
     {
@@ -10,39 +7,43 @@ namespace Patterns
         public Value()
         {
             Choice value = new Choice(
-                new Strings(),
+                new String(),
                 new Number(),
                 new Text("true"),
                 new Text("false"),
                 new Text("null")
             );
-
-            IPattern separator = Wrap(',');
-
-            IPattern objBody = new List(new Sequence(new Strings(), Wrap(':'), value), separator);
-            IPattern obj = new Sequence(Wrap('{'), objBody, Wrap('}'));
-
-            IPattern arrayBody = new List(value, separator);
-            IPattern array = new Sequence(Wrap('['), arrayBody, Wrap(']'));
-
-            value.Add(array);
-            value.Add(obj);
-
-            pattern = value;
+            var element = Element(value);
+            value.Add(Array(value));
+            value.Add(Object(element));
+            this.pattern = element;
         }
 
-        private static IPattern Wrap(char c)
-            => WrapPattern(new Character(c));
-    
-        private static IPattern WrapPattern(IPattern pattern)
-        {
-            var whitespace = new Many(new Any(" \r\n\t"));
-            return new Sequence(whitespace, pattern, whitespace);
-        }
+        private IPattern Array(IPattern value)
+            => new Sequence(Separator('['), Elements(value), Separator(']'));
+
+        private IPattern Object(IPattern element)
+            => new Sequence(Separator('{'), Members(element), Separator('}'));
+
+        private IPattern Separator(char ch)
+            => new Sequence(Whitespace(), new Character(ch), Whitespace());
+
+        private IPattern Whitespace()
+            => new Many(new Any(" \r\n\t"));
+
+        private IPattern Members(IPattern element)
+            => new List(Member(element), Separator(','));
+
+        private IPattern Member(IPattern element)
+            => new Sequence(Whitespace(), new String(), Separator(':'), element);
+
+        private IPattern Elements(IPattern value)
+            => new List(Element(value), Separator(','));
+
+        private IPattern Element(IPattern value)
+            => new Sequence(Whitespace(), value, Whitespace());
 
         public IMatch Match(string text)
-        {
-            return pattern.Match(text);
-        }
+            => this.pattern.Match(text);
     }
 }

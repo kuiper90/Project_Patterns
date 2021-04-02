@@ -1,89 +1,88 @@
-﻿using System;
-using Patterns;
+﻿using Patterns;
 using Xunit;
 
-namespace Patterns
+namespace UnitTest_Patterns
 {
     public class UnitTest_Any
     {
         [Fact]
-        public void InputLowFirstChar_Should_Match_AnyIn_Pattern()
+        public void LowerCaseFirstCharacterMatchesAny()
         {
-            Any e = new Any("eE");
-            Assert.True(e.Match("ea").Success() == true);
-            Assert.True(e.Match("ea").RemainingText() == "a");
+            Any pattern = new Any("eE");
+            Assert.True(pattern.Match("ea").Success());
+            Assert.True(pattern.Match("ea").RemainingText() == "a");
         }
 
         [Fact]
-        public void InputUpFirstChar_Should_Match_AnyIn_Pattern()
+        public void UpperCaseFirstCharacterMatchesAny()
         {
-            Any e = new Any("eE");
-            Assert.True(e.Match("Ea").Success() == true);
-            Assert.True(e.Match("Ea").RemainingText() == "a");
+            Any pattern = new Any("Ea");
+            Assert.True(pattern.Match("Ea").Success());
+            Assert.True(pattern.Match("Ea").RemainingText() == "a");
         }
 
         [Fact]
-        public void CharNotInPattern_ShouldNot_Match_AnyIn_Pattern()
+        public void CharacterNotInPatternDoesNotMatchAny()
         {
-            Any e = new Any("eE");
-            Assert.True(e.Match("a").Success() == false);
-            Assert.True(e.Match("a").RemainingText() == "a");
+            Any pattern = new Any("eE");
+            Assert.False(pattern.Match("a").Success());
+            Assert.True(pattern.Match("a").RemainingText() == "a");
         }
 
         [Fact]
-        public void Empty_ShouldNot_Match_AnyIn_CharPattern()
+        public void EmptyStringDoesNotMatchAny()
         {
-            Any e = new Any("eE");
-            Assert.True(e.Match("").Success() == false);
-            Assert.True(e.Match("").RemainingText() == "");
+            Any pattern = new Any("eE");
+            Assert.False(pattern.Match("").Success());
+            Assert.True(pattern.Match("").RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void Null_ShouldNot_Match_AnyIn_CharPattern()
+        public void NullDoesNotMatchAny()
         {
-            Any e = new Any("eE");
-            Assert.True(e.Match(null).Success() == false);
-            Assert.True(e.Match(null).RemainingText() == null);
+            Any pattern = new Any("eE");
+            Assert.False(pattern.Match(null).Success());
+            Assert.True(pattern.Match(null).RemainingText() == null);
         }
 
         [Fact]
-        public void Plus_Should_Match_AnyIn_Pattern()
+        public void PlusMatchesAnySigns()
         {
-            Any sign = new Any("-+");
-            Assert.True(sign.Match("+3").Success() == true);
-            Assert.True(sign.Match("+3").RemainingText() == "3");
+            Any pattern = new Any("-+");
+            Assert.True(pattern.Match("+3").Success());
+            Assert.True(pattern.Match("+3").RemainingText() == "3");
         }
 
         [Fact]
-        public void Minus_Should_Match_AnyIn_Pattern()
+        public void MinusMatchesAnySigns()
         {
-            Any sign = new Any("-+");
-            Assert.True(sign.Match("-2").Success() == true);
-            Assert.True(sign.Match("-2").RemainingText() == "2");
+            Any pattern = new Any("-+");
+            Assert.True(pattern.Match("-8").Success());
+            Assert.True(pattern.Match("-8").RemainingText() == "8");
         }
 
         [Fact]
-        public void Digit_ShouldNot_Match_AnyIn_Pattern()
+        public void DigitDoesNotMatchAnySigns()
         {
-            Any sign = new Any("-+");
-            Assert.True(sign.Match("2").Success() == false);
-            Assert.True(sign.Match("2").RemainingText() == "2");
+            Any pattern = new Any("-+");
+            Assert.False(pattern.Match("2").Success());
+            Assert.True(pattern.Match("2").RemainingText() == "2");
         }
 
         [Fact]
-        public void Empty_ShouldNot_Match_AnyIn_Pattern()
+        public void EmptyDoesNotMatchAnySigns()
         {
-            Any sign = new Any("-+");
-            Assert.True(sign.Match("").Success() == false);
-            Assert.True(sign.Match("").RemainingText() == "");
+            Any pattern = new Any("-+");
+            Assert.False(pattern.Match("").Success());
+            Assert.True(pattern.Match("").RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void Null_ShouldNot_Match_AnyIn_Pattern()
+        public void NullDoesNotMatchAnySigns()
         {
-            Any sign = new Any("-+");
-            Assert.True(sign.Match(null).Success() == false);
-            Assert.True(sign.Match(null).RemainingText() == null);
+            Any pattern = new Any("-+");
+            Assert.False(pattern.Match(null).Success());
+            Assert.True(pattern.Match(null).RemainingText() == null);
         }
     }
 }

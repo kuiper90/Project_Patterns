@@ -1,94 +1,137 @@
-﻿using System;
-using Patterns;
+﻿using Patterns;
 using Xunit;
 
-namespace Patterns
+namespace UnitTest_Patterns
 {
     public class UnitTest_Choice
     {
-        public Choice GetDigit()
+        [Fact]
+        public void ChoiceMatchesOneDigitString()
         {
-            return (new Choice(new Character('0'), new Range('1', '9')));
+            Choice choice = new Choice(new IPattern[] {
+                new Character('0'),
+                new Range('1', '9')
+            });
+            Assert.True(choice.Match("0").Success());
+            Assert.True(choice.Match("0").RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void FirstChar_ShouldNot_Match_Digit()
+        public void ChoiceMatchesFirstDigitInNumber()
         {
-            Choice choice = GetDigit();
-            Assert.True(choice.Match("casper").Success() == false);
-            Assert.True(choice.Match("casper").RemainingText() == "casper");
+            Choice choice = new Choice(new IPattern[] {
+                new Character('0'),
+                new Range('1', '9')
+            });
+            Assert.True(choice.Match("102").Success());
+            Assert.True(choice.Match("102").RemainingText() == "02");
         }
 
         [Fact]
-        public void FirstChar_Five_Should_Match_Five()
+        public void ChoiceMatchesFirstDigitInDigitString()
         {
-            Choice choice = GetDigit();
-            Assert.True(choice.Match("5casper").Success() == true);
-            Assert.True(choice.Match("5casper").RemainingText() == "casper");
-        }
-
-        [Fact]
-        public void FirstChar_Zero_Should_Match_Zero()
-        {
-            Choice choice = GetDigit();
-            Assert.True(choice.Match("0casper").Success() == true);
-            Assert.True(choice.Match("0casper").RemainingText() == "casper");
-        }
-
-        [Fact]
-        public void EmptyInput_Should_Match_Digit()
-        {
-            Choice choice = GetDigit();
-            Assert.True(choice.Match("").Success() == false);
-            Assert.True(choice.Match("").RemainingText() == "");
-        }
-
-        [Fact]
-        public void TwoDigits_Should_Match_Choice()
-        {
-            Choice choice = new Choice(GetDigit(), new Choice(new Range('a', 'f'), new Range('A', 'F')));
-            Assert.True(choice.Match("012").Success() == true);
+            Choice choice = new Choice(new IPattern[] {
+                new Character('0'),
+                new Range('1', '9')
+            });
+            Assert.True(choice.Match("012").Success());
             Assert.True(choice.Match("012").RemainingText() == "12");
         }
 
         [Fact]
-        public void ThreeDigits_Should_Match_Choice()
+        public void ChoiceDoesNotMatchIfCharacterNotInPattern()
         {
-            Choice choice = new Choice(GetDigit(), new Choice(new Range('a', 'f'), new Range('A', 'F')));
-            Assert.True(choice.Match("12").Success() == true);
-            Assert.True(choice.Match("12").RemainingText() == "2");
+            Choice choice = new Choice(new IPattern[] {
+                new Character('0'),
+                new Range('1', '9')
+            });
+            Assert.False(choice.Match("a9").Success());
+            Assert.True(choice.Match("a9").RemainingText() == "a9");
         }
 
         [Fact]
-        public void LowCharDigit_Should_Match_Choice()
+        public void ChoiceDoesNotMatchEmptyString()
         {
-            Choice choice = new Choice(GetDigit(), new Choice(new Range('a', 'f'), new Range('A', 'F')));
-            Assert.True(choice.Match("a9").Success() == true);
-            Assert.True(choice.Match("a9").RemainingText() == "9");
+            Choice choice = new Choice(new IPattern[] {
+                new Character('0'),
+                new Range('1', '9')
+            });
+            Assert.False(choice.Match("").Success());
+            Assert.True(choice.Match("").RemainingText()?.Length == 0);
         }
 
         [Fact]
-        public void UpCharDigit_Should_Match_Choice()
+        public void ChoiceDoesNotMatchNull()
         {
-            Choice choice = new Choice(GetDigit(), new Choice(new Range('a', 'f'), new Range('A', 'F')));
-            Assert.True(choice.Match("F8").Success() == true);
-            Assert.True(choice.Match("F8").RemainingText() == "8");
+            Choice choice = new Choice(new IPattern[] {
+                new Character('0'),
+                new Range('1', '9')
+            });
+            Assert.False(choice.Match(null).Success());
+            Assert.True(choice.Match(null).RemainingText() == null);
         }
 
         [Fact]
-        public void LowIncorrectCharDigit_ShouldNot_Match_Choice()
+        public void ChoiceMatchesFirstCharacterInAlphanumericString()
         {
-            Choice choice = new Choice(GetDigit(), new Choice(new Range('a', 'f'), new Range('A', 'F')));
-            Assert.True(choice.Match("g8").Success() == false);
-            Assert.True(choice.Match("g8").RemainingText() == "g8");
+            Choice digit = new Choice(
+                    new Character('0'),
+                    new Range('1', '9')
+                    );
+            Choice choice = new Choice(
+                    digit,
+                    new Choice(
+                        new Range('a', 'z'),
+                        new Range('A', 'Z')
+                        )
+                    );
+            Assert.True(choice.Match("t0agh").Success());
+            Assert.True(choice.Match("t0agh").RemainingText() == "0agh");
+        }
+
+        public void ChoiceMatchesFirstCharacterInVariousRanges()
+        {
+            Choice allCharacters = new Choice(
+                    new Range((char)32, (char)47),
+                    new Range((char)58, (char)64)
+                    );
+            Choice choice = new Choice(
+                    allCharacters,
+                    new Choice(
+                        new Range('a', 'z'),
+                        new Range('A', 'Z')
+                        )
+                    );
+            Assert.True(choice.Match("#@ta^%&gh").Success());
+            Assert.True(choice.Match("#@ta^%&gh").RemainingText() == "#ta^%&gh");
+        }
+
+        public void ChoiceMatchesFirstCharacterInSpecialCharactersString()
+        {
+            Choice character = new Choice(
+                    new Character((char)8),
+                    new Character((char)9)
+                    );
+            Choice choice = new Choice(
+                    character,
+                    new Choice(
+                        new Character((char)10),
+                        new Character((char)12)
+                        )
+                    );
+            Assert.True(choice.Match("\b\t\n\r").Success());
+            Assert.True(choice.Match("\b\t\n\r").RemainingText() == "\t\n\r");
         }
 
         [Fact]
-        public void EmptyInput_Should_Match_Choice()
+        public void ChoiceMatchesFirstCharacterInAnyGivenRange()
         {
-            Choice choice = new Choice(GetDigit(), new Choice(new Range('a', 'f'), new Range('A', 'F')));
-            Assert.True(choice.Match("").Success() == false);
-            Assert.True(choice.Match("").RemainingText() == "");
+            Choice choice = new Choice(
+                        new Range((char)8, (char)13),
+                        new Range((char)33, (char)127)
+                    );
+            Assert.True(choice.Match("*+-,whoksj.@#$!%\\^%&CTBVXkN").Success());
+            Assert.True(choice.Match("*+-,whoksj.@#$!%\\^%&CTBVXkN").RemainingText() == "+-,whoksj.@#$!%\\^%&CTBVXkN");
         }
     }
 }

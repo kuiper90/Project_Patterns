@@ -1,113 +1,120 @@
-﻿using System;
-using Patterns;
+﻿using Patterns;
 using Xunit;
 
-namespace Patterns
+namespace UnitTest_Patterns
 {
     public class UnitTest_OneOrMore
     {
         [Fact]
-        public void FirstChar_Should_Match_Char()
+        public void FirstCharacterMatchesCharacter()
         {
-            OneOrMore a = new OneOrMore(new Character('a'));
-            Assert.True(a.Match("abc").Success() == true);
-            Assert.True(a.Match("abc").RemainingText() == "bc");
+            OneOrMore pattern = new OneOrMore(new Character('a'));
+            Assert.True(pattern.Match("abc").Success());
+            Assert.True(pattern.Match("abc").RemainingText() == "bc");
         }
 
         [Fact]
-        public void MultipleFirstChar_Should_Match_Char()
+        public void MultipleFirstCharacterMatchesCharacter()
         {
-            OneOrMore a = new OneOrMore(new Character('a'));
-            Assert.True(a.Match("aaaabc").Success() == true);
-            Assert.True(a.Match("aaaabc").RemainingText() == "bc");
+            OneOrMore pattern = new OneOrMore(new Character('a'));
+            Assert.True(pattern.Match("aaaabc").Success());
+            Assert.True(pattern.Match("aaaabc").RemainingText() == "bc");
         }
 
         [Fact]
-        public void InputFirstChar_Should_Match_Char()
+        public void FirstCharacterDoesNotMatchCharacter()
         {
-            OneOrMore a = new OneOrMore(new Character('a'));
-            Assert.True(a.Match("bc").Success() == false);
-            Assert.True(a.Match("bc").RemainingText() == "bc");
+            OneOrMore pattern = new OneOrMore(new Character('a'));
+            Assert.False(pattern.Match("bc").Success());
+            Assert.True(pattern.Match("bc").RemainingText() == "bc");
         }
 
         [Fact]
-        public void Empty_Should_Match_Char()
+        public void EmptyStringMatchesCharacter()
         {
-            OneOrMore a = new OneOrMore(new Character('a'));
-            Assert.True(a.Match("").Success() == false);
-            Assert.True(a.Match("").RemainingText() == "");
+            OneOrMore pattern = new OneOrMore(new Character('a'));
+            Assert.False(pattern.Match("").Success());
+            Assert.True(pattern.Match("").RemainingText() == "");
         }
 
         [Fact]
-        public void FirstCharDigit_Should_Match_Char()
+        public void FirstCharPlusMatchesCharacter()
         {
-            OneOrMore a = new OneOrMore(new Character('a'));
-            Assert.True(a.Match("1 a").Success() == false);
-            Assert.True(a.Match("1 a").RemainingText() == "1 a");
+            OneOrMore pattern = new OneOrMore(new Character('a'));
+            Assert.False(pattern.Match("+1 a").Success());
+            Assert.True(pattern.Match("+1 a").RemainingText() == "+1 a");
         }
 
         [Fact]
-        public void FirstCharWhitespace_ShouldNot_Match_Char()
+        public void FirstCharacterDigitMatchesCharacter()
         {
-            OneOrMore a = new OneOrMore(new Character('a'));
-            Assert.True(a.Match(" a").Success() == false);
-            Assert.True(a.Match(" a").RemainingText() == " a");
+            OneOrMore pattern = new OneOrMore(new Character('a'));
+            Assert.False(pattern.Match("1a").Success());
+            Assert.True(pattern.Match("1a").RemainingText() == "1a");
         }
 
         [Fact]
-        public void FirstCharAndSpace_Should_Match_Char()
+        public void SpaceAndFirstCharacterMatchCharacter()
         {
-            OneOrMore a = new OneOrMore(new Character('a'));
-            Assert.True(a.Match("a ").Success() == true);
-            Assert.True(a.Match("a ").RemainingText() == " ");
+            OneOrMore pattern = new OneOrMore(new Character('a'));
+            Assert.False(pattern.Match(" a").Success());
+            Assert.True(pattern.Match(" a").RemainingText() == " a");
         }
 
         [Fact]
-        public void FirstNumber_Should_Match_RangeOfDigits()
+        public void FirstCharacterAndSpaceMatchCharacter()
         {
-            OneOrMore digits = new OneOrMore(new Range('0', '9'));
-            Assert.True(digits.Match("12345ab123").Success() == true);
-            Assert.True(digits.Match("12345ab123").RemainingText() == "ab123");
+            OneOrMore pattern = new OneOrMore(new Character('a'));
+            Assert.True(pattern.Match("a ").Success());
+            Assert.True(pattern.Match("a ").RemainingText() == " ");
         }
 
         [Fact]
-        public void Letters_Should_Match_RangeOfDigits()
+        public void FirstNumberMatchesRangeOfDigits()
         {
-            OneOrMore digits = new OneOrMore(new Range('0', '9'));
-            Assert.True(digits.Match("ab").Success() == false);
-            Assert.True(digits.Match("ab").RemainingText() == "ab");
+            OneOrMore pattern = new OneOrMore(new Range('0', '9'));
+            Assert.True(pattern.Match("12345ab123").Success());
+            Assert.True(pattern.Match("12345ab123").RemainingText() == "ab123");
         }
 
         [Fact]
-        public void Null_ShouldNot_Match_RangeOfDigits()
+        public void LettersMatchRangeOfDigits()
         {
-            OneOrMore digits = new OneOrMore(new Range('0', '9'));
-            Assert.True(digits.Match(null).Success() == false);
-            Assert.True(digits.Match(null).RemainingText() == null);
+            OneOrMore pattern = new OneOrMore(new Range('0', '9'));
+            Assert.False(pattern.Match("bc").Success());
+            Assert.True(pattern.Match("bc").RemainingText() == "bc");
         }
 
         [Fact]
-        public void NumberAndChars_Should_Match_RangeOfDigits()
+        public void NullDoesNotMatchRangeOfDigits()
         {
-            OneOrMore digits = new OneOrMore(new Range('0', '9'));
-            Assert.True(digits.Match("123ab").Success() == true);
-            Assert.True(digits.Match("123ab").RemainingText() == "ab");
+            OneOrMore pattern = new OneOrMore(new Range('0', '9'));
+            Assert.False(pattern.Match(null).Success());
+            Assert.True(pattern.Match(null).RemainingText() == null);
         }
 
         [Fact]
-        public void Number_Should_Match_RangeOfDigits()
+        public void NumberAndCharacterMatchesRangeOfDigits()
         {
-            OneOrMore digits = new OneOrMore(new Range('0', '9'));
-            Assert.True(digits.Match("123").Success() == true);
-            Assert.True(digits.Match("123").RemainingText() == "");
+            OneOrMore pattern = new OneOrMore(new Range('0', '9'));
+            Assert.True(pattern.Match("123ab").Success());
+            Assert.True(pattern.Match("123ab").RemainingText() == "ab");
         }
 
         [Fact]
-        public void MultipleFirstChar_Should_Match_Many_TextPattern()
+        public void NumberMatchesRangeOfDigits()
         {
-            OneOrMore a = new OneOrMore(new Text("abc"));
-            Assert.True(a.Match("abcabcd").Success() == true);
-            Assert.True(a.Match("abcabcd").RemainingText() == "d");
+            OneOrMore pattern = new OneOrMore(new Range('0', '9'));
+            Assert.True(pattern.Match("123").Success());
+            Assert.True(pattern.Match("123").RemainingText() == "");
+        }
+
+        [Fact]
+        public void MultipleFirstCharacterMatchManyTextPattern()
+        {
+            OneOrMore pattern = new OneOrMore(new Text("abc"));
+            Assert.True(pattern.Match("abcabcd").Success());
+            Assert.True(pattern.Match("abcabcd").RemainingText() == "d");
         }
     }
 }

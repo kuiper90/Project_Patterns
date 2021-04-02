@@ -1,12 +1,9 @@
-﻿using Patterns;
-using System;
-
-namespace Patterns
+﻿namespace Patterns
 {
     public class Range : IPattern
     {
-        char start;
-        char end;
+        private char start;
+        private char end;
 
         public Range(char start, char end)
         {
@@ -16,12 +13,18 @@ namespace Patterns
 
         public IMatch Match(string text)
         {
-            if (String.IsNullOrEmpty(text))
-                return (new Match(false, text));
-            bool success = ((text[0] >= start) && (text[0] <= end));
-            if (!success)
-                return (new Match(false, text));
-            return (new Match(success, text.Remove(0, 1)));            
+            if (string.IsNullOrEmpty(text))
+            {
+                return new Match(false, text);
+            }
+
+            bool withinRange = this.start <= text[0] && this.end >= text[0];
+            if (!withinRange)
+            {
+                return new Match(false, text);
+            }
+
+            return new Match(withinRange, text.Remove(0, 1));
         }
     }
 }
